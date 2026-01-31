@@ -24,8 +24,8 @@ public class Shooter extends SubsystemBase {
       // mutable stuff idfkwhy
 
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
-    private final MutAngle m_angle = Radians.mutable(0);
-    private final MutAngularVelocity m_velocity = RadiansPerSecond.mutable(0);
+    private final MutAngle m_angle = Rotations.mutable(0);
+    private final MutAngularVelocity m_velocity = RotationsPerSecond.mutable(0);
 
   public Shooter() {
     // 2. Initialize the Spark Flex with CAN ID 41
@@ -41,7 +41,7 @@ public class Shooter extends SubsystemBase {
               log.motor("shooter")
                   .voltage(
                       m_appliedVoltage.mut_replace(
-                          m_flexMotor.get() * RobotController.getBatteryVoltage(), Volts))
+                          m_flexMotor.getBusVoltage(), Volts))
                   .angularPosition(
                       m_angle.mut_replace(m_flexMotor.getEncoder().getPosition(), Rotations))
                   .angularVelocity(
