@@ -1,27 +1,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.targetSystem;
+import frc.robot.subsystems.Shooter;
 
-public class Shooter extends Command {
+public class Shoot extends Command {
 
-  private final targetSystem m_targetSystem;
+  private final Shooter m_Shooter;
   private final double m_speed;
 
-  public Shooter(targetSystem subsystem, double speed) {
-    m_targetSystem = subsystem;
+  public Shoot(Shooter subsystem, double speed) {
+    m_Shooter = subsystem;
     m_speed = speed;
-    addRequirements(m_targetSystem);
+    addRequirements(m_Shooter);
   }
 
   @Override
   public void initialize() {
-    m_targetSystem.runMotor(m_speed);
+    m_Shooter.runMotor(m_speed);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_targetSystem.stopMotor();
+    m_Shooter.stopMotor();
   }
 
   @Override
