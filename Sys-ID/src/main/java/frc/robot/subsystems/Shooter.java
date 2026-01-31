@@ -4,6 +4,7 @@ import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
@@ -14,7 +15,10 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.SparkFlex; // Ensure REVLib is installed
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 public class Shooter extends SubsystemBase {
   // 1. Declare the motor controller
@@ -23,13 +27,18 @@ public class Shooter extends SubsystemBase {
 
       // mutable stuff idfkwhy
 
-    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
-    private final MutAngle m_angle = Rotations.mutable(0);
-    private final MutAngularVelocity m_velocity = RotationsPerSecond.mutable(0);
+  private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+  private final MutAngle m_angle = Rotations.mutable(0);
+  private final MutAngularVelocity m_velocity = RotationsPerSecond.mutable(0);
 
   public Shooter() {
     // 2. Initialize the Spark Flex with CAN ID 41
     m_flexMotor = new SparkFlex(41, MotorType.kBrushless);
+
+    SparkFlexConfig m_flexMotorConfig = new SparkFlexConfig();
+    m_flexMotorConfig.encoder.positionConversionFactor(1);
+    m_flexMotorConfig.encoder.velocityConversionFactor(1);
+    m_flexMotor.configure(m_flexMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(),
@@ -68,5 +77,11 @@ public class Shooter extends SubsystemBase {
 
   public SysIdRoutine shooterSysID() {
     return sysIdRoutine;
+  }
+
+  public Command imDone() {
+    return this.runOnce(() -> {
+      System.out.println("IMDONE");
+    });
   }
 }

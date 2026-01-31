@@ -26,6 +26,7 @@ public class RobotContainer {
       .andThen(m_Shooter.shooterSysID().quasistatic(SysIdRoutine.Direction.kForward))
       .andThen(m_Shooter.shooterSysID().dynamic(SysIdRoutine.Direction.kReverse))
       .andThen(m_Shooter.shooterSysID().quasistatic(SysIdRoutine.Direction.kReverse))
+      .andThen(m_Shooter.imDone()) 
     );
   }
 
