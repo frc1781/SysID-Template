@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase {
 
     SparkFlexConfig m_flexMotorConfig = new SparkFlexConfig();
     m_flexMotorConfig.encoder.positionConversionFactor(1);
-    m_flexMotorConfig.encoder.velocityConversionFactor(1);
+    m_flexMotorConfig.encoder.velocityConversionFactor(1.0/60.0);//reporting in RPM converting to RPS
     m_flexMotor.configure(m_flexMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     sysIdRoutine = new SysIdRoutine(
@@ -49,8 +49,7 @@ public class Shooter extends SubsystemBase {
             log -> {
               log.motor("shooter")
                   .voltage(
-                      m_appliedVoltage.mut_replace(
-                          m_flexMotor.getBusVoltage(), Volts))
+                      m_appliedVoltage.mut_replace(m_flexMotor.getAppliedOutput() * m_flexMotor.getBusVoltage(), Volts))
                   .angularPosition(
                       m_angle.mut_replace(m_flexMotor.getEncoder().getPosition(), Rotations))
                   .angularVelocity(
