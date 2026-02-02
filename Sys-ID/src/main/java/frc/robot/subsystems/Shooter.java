@@ -14,6 +14,7 @@ import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex; // Ensure REVLib is installed
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -24,6 +25,7 @@ public class Shooter extends SubsystemBase {
   // 1. Declare the motor controller
   private final SparkFlex m_flexMotor;
   private SysIdRoutine sysIdRoutine;
+  private SparkClosedLoopController motorControl;
 
       // mutable stuff idfkwhy
 
@@ -39,6 +41,8 @@ public class Shooter extends SubsystemBase {
     m_flexMotorConfig.encoder.positionConversionFactor(1);
     m_flexMotorConfig.encoder.velocityConversionFactor(1.0/60.0);//reporting in RPM converting to RPS
     m_flexMotor.configure(m_flexMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    motorControl = m_flexMotor.getClosedLoopController();
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(),
