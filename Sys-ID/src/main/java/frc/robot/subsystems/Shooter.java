@@ -16,6 +16,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex; // Ensure REVLib is installed
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -40,6 +41,7 @@ public class Shooter extends SubsystemBase {
     SparkFlexConfig m_flexMotorConfig = new SparkFlexConfig();
     m_flexMotorConfig.encoder.positionConversionFactor(1);
     m_flexMotorConfig.encoder.velocityConversionFactor(1.0/60.0);//reporting in RPM converting to RPS
+    m_flexMotorConfig.closedLoop.pid(0.014622, 0, 0).feedForward.sv(0.09836, 0.10541);
     m_flexMotor.configure(m_flexMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     motorControl = m_flexMotor.getClosedLoopController();
@@ -64,8 +66,8 @@ public class Shooter extends SubsystemBase {
   }
 
   // 3. Create a method to set the motor speed
-  public void runMotor(double speed) {
-    m_flexMotor.set(speed);
+  public void setMotor(double speed) {
+    motorControl.setSetpoint(speed, ControlType.kVelocity);
   }
 
   // 4. Create a method to stop the motor

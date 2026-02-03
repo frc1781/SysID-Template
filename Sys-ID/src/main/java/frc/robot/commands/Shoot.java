@@ -16,7 +16,7 @@ public class Shoot extends Command {
 
   @Override
   public void initialize() {
-    m_Shooter.runMotor(m_speed);
+    m_Shooter.setMotor(m_speed);
   }
 
   @Override

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Shooter; // Import your subsystem
 
 public class RobotContainer {
@@ -28,6 +29,7 @@ public class RobotContainer {
       .andThen(m_Shooter.shooterSysID().quasistatic(SysIdRoutine.Direction.kReverse))
       .andThen(m_Shooter.imDone()) 
     );
+    m_driverController.b().whileTrue(new Shoot(m_Shooter, 100));
   }
 
   public Command getAutonomousCommand() {
