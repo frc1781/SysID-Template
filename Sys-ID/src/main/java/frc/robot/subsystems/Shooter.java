@@ -41,7 +41,7 @@ public class Shooter extends SubsystemBase {
     SparkFlexConfig m_flexMotorConfig = new SparkFlexConfig();
     m_flexMotorConfig.encoder.positionConversionFactor(1);
     m_flexMotorConfig.encoder.velocityConversionFactor(1.0/60.0);//reporting in RPM converting to RPS
-    m_flexMotorConfig.closedLoop.pid(0.014622, 0, 0).feedForward.sv(0.09836, 0.10541);
+    m_flexMotorConfig.closedLoop.pid(0.014622, 0, 0).feedForward.kV(0.10541); //SparkFlex does not take kA, kV, or kS
     m_flexMotor.configure(m_flexMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     motorControl = m_flexMotor.getClosedLoopController();
